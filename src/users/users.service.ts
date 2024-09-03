@@ -9,9 +9,14 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(username: string, password: string): Promise<User> {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new this.userModel({ username, password: hashedPassword });
-    return user.save();
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = new this.userModel({ username, password: hashedPassword });
+      return user.save();
+    } catch (error) {
+      console.log('error->', error);
+      return error;
+    }
   }
 
   async findOne(username: string): Promise<User | undefined> {
