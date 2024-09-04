@@ -8,14 +8,22 @@ import { User, UserDocument } from './schemas/user.schema';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async create(username: string, password: string): Promise<User> {
+  async create(
+    name: string,
+    username: string,
+    password: string,
+  ): Promise<User> {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = new this.userModel({ username, password: hashedPassword });
-      return user.save();
+      const user = new this.userModel({
+        name,
+        username,
+        password: hashedPassword,
+      });
+
+      return await user.save();
     } catch (error) {
-      console.log('error->', error);
-      return error;
+      return error.message;
     }
   }
 

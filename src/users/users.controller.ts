@@ -11,8 +11,10 @@ export class UsersController {
   ) {}
 
   @Post('register')
-  async register(@Body() body: { username: string; password: string }) {
-    return this.usersService.create(body.username, body.password);
+  async register(
+    @Body() body: { name: string; username: string; password: string },
+  ) {
+    return this.usersService.create(body.name, body.username, body.password);
   }
 
   @UseGuards(LocalAuthGuard)

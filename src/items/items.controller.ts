@@ -7,11 +7,14 @@ import {
   Delete,
   Put,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from './schemas/item.schema';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('items')
+@UseGuards(JwtAuthGuard)
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
